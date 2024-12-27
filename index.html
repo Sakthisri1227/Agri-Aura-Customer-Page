@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Aura - Buy Agricultural Products</title>
+     <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+    font-weight: bold;
+}
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .app-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin-left: -50px; /* Adjust spacing for perfect centering */
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-buttons button {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #4CAF50;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .header-buttons button:hover {
+            background-color: #45a049;
+            color: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-buttons button i {
+            font-size: 18px;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .location label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .location select,
+        .location button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .location button:hover {
+            background-color: #45a049;
+            color: white;
+        }
+
+        .banner {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 20px;
+        }
+        
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background-color: #eee;
+            padding: 10px 0;
+        }
+
+        .category-nav button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-inline: 10px;
+        }
+
+        .category-nav button:hover {
+            transform: scale(1.1);
+    background-color: #3e8e41;
+      }
+
+   /* Carousel Styling */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            display: flex;
+            flex: 1 0 auto;
+            justify-content: space-between;
+        }
+
+        .carousel-slide img {
+            width: 32%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Navigation Buttons */
+        .carousel-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .carousel-button {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Indicators */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+        
+        /* cart styling*/
+        .cart-summary {
+    position: fixed;
+    right: 20px;
+    top: 80px;
+    width: 300px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: none; /* Hide initially */
+}
+
+.cart-summary h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.cart-summary button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.cart-summary button:hover {
+    background-color: #45a049;
+}
+
+/* Center the Vegetables heading */
+.vegetables-heading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 30px;
+}
+
+
+        /* Product grid styling */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    gap: 30px; /* Spacing between cards */
+    padding: 15px;
+    margin-left: 110px;
+}
+
+.product-card {
+    background: #799aab;
+    padding: 10px;
+    border: 1px solid #f1f1f1;
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 270px; /* Adjusted height for buttons to fit */
+    max-height: 300px;
+    max-width: 300px;
+    box-sizing: border-box; /* Includes padding and border in size */
+}
+
+.product-card img {
+    max-width: 100%;
+    height: 60%; /* Adjust height for better fit */
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-card h3 {
+    margin: 10px 0 5px;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.product-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.product-card .price {
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+/* Buttons styling */
+.product-card .button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Make buttons fit within card width */
+    gap: 10px;
+    padding: 5px 10px 0;
+}
+
+.product-card button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    flex: 1; /* Ensure buttons take equal space */
+    max-width: 45%; /* Prevent buttons from being too wide */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.product-card button:hover {
+    background-color: #45a049;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    transition: all 0.3s ease-in-out;
+}
+
+        
+       /* Footer */
+        .footer {
+            background-color: #2e7d32;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .footer h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+        }
+
+        .footer .social-icons a {
+            margin: 0 10px;
+            color: #fff;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer .social-icons a:hover {
+            color: #dcedc8;
+        }
+
+        /*additional stylings*/
+
+.newsletter {
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .category-nav button {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.carousel-slide img {
+    animation: fadeIn 1s ease-in-out;
+}
+ 
+    </style>
+    <header>
+        <div class="header-top">
+            <div class="logo">
+                <img src="https://i.ibb.co/nCDTKbX/LOGO.png" alt="Agri Aura Logo">
+            </div>
+            <div class="app-name">Agri Aura</div>
+            <div class="header-buttons">
+                <button onclick="window.location.href='account.html'">
+                    <i class="fa fa-user"></i> Account
+                </button>
+                <a href="cart.html"><button id="cart-button" onclick="showCart()" >
+                    <i class="fa fa-shopping-cart"></i> Cart (<span id="cart-count">0</span>)
+                </button> </a>
+            </div>
+        </div>
+        <div class="location">
+            <label for="district">Select Your Location:</label>
+            <select id="district" onchange="updatePrices()">
+                <option value="">--Select--</option>
+                <option value="district1">Karur</option>
+                <option value="district2">Namakkal</option>
+                <option value="district3">Tiruppur</option>
+                <option value="district4">Coimbatore</option>
+                <option value="district5"> Erode</option>
+                <option value="district6">Nilgiris</option>
+                <option value="district7">Salem</option>
+                <option value="district8">Dharmapuri</option>
+                <option value="district9">Krishnagiri</option>
+                <option value="district10">Dindigul</option>
+                <option value="district11">Kanyakumari</option>
+                <option value="district12">Tirunelveli</option>
+                <option value="district13">Tenkasi</option>
+                <option value="district14">Thoothukudi</option>
+                <option value="district15">Theni</option>
+                <option value="district16">Virudhunagar</option>
+                <option value="district17">Madurai</option>
+                <option value="district18">Ramanathapuram</option>
+                <option value="district19">Sivagangai</option>
+                <option value="district20">Pudukkottai</option>
+                <option value="district21">Tiruchirappalli</option>
+                <option value="district22">Thanjavur</option>
+                <option value="district23">Nagapattinam</option>
+                <option value="district24">Perambalur</option>
+                <option value="district25">Ariyalur</option>
+                <option value="district26">Mayiladuthurai</option>
+                <option value="district27">Cuddalore</option>
+                <option value="district28">Kallakurichi</option>
+                <option value="district29">Villupuram</option>
+                <option value="district30">Tiruvannamalai</option>
+                <option value="district31">Tirupattur</option>
+                <option value="district32">Chengalpattu</option>
+                <option value="district33">Kanchipuram</option>
+                <option value="district34">Ranipet</option>
+                <option value="district35">Vellore</option>
+                <option value="district36">Thiruvallur</option>
+                <option value="district37">Thiruvarur</option>
+            </select>
+            <button onclick="autoDetectLocation()">
+                <i class="fa fa-map-marker"></i> Auto Detect Location
+            </button>
+        </div>
+    </header>
+     <nav class="category-nav">
+        <button onclick="scrollToCategory('vegetables')"><i class="fas fa-carrot"></i>Vegetables</button>
+        <button onclick="scrollToCategory('fruits')"><i class="fas fa-apple-alt"></i>Fruits</button>
+        <button onclick="scrollToCategory('grains')"><i class="fas fa-bread-slice"></i>Grains</button>
+        <button onclick="scrollToCategory('greens')"><i class="fas fa-leaf"></i>Greens</button>
+        <button onclick="scrollToCategory('spices')"><i class="fas fa-pepper-hot"></i>Spices</button>
+    </nav>
+
+  <div class="carousel-container">
+    <div class="carousel-images" id="carouselImages">
+        <div class="carousel-slide">
+            <img src="https://i.ibb.co/y548JPd/corousal1.jpg" alt="Image 1">
+            <img src="https://i.ibb.co/qDmW4Fb/corousal2.jpg" alt="Image 2">
+            <img src="https://i.ibb.co/YRdJD1L/corousal3.jpg" alt="Image 3">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://i.ibb.co/yyp9VHh/corousal4.jpg" alt="Image 4">
+            <img src="https://i.ibb.co/0MLNtzB/c5.jpg" alt="Image 5">
+            <img src="https://i.ibb.co/LhY8087/c2.jpg" alt="Image 6">
+        </div>
+    </div>
+
+    
+    
+    <!-- Navigation Buttons -->
+    <div class="carousel-buttons">
+        <button class="carousel-button" onclick="prevSlide()">&#10094;</button>
+        <button class="carousel-button" onclick="nextSlide()">&#10095;</button>
+    </div>
+
+    <!-- Indicators -->
+    <div class="carousel-indicators" id="carouselIndicators">
+        <span class="indicator active" onclick="goToSlide(0)"></span>
+        <span class="indicator" onclick="goToSlide(1)"></span>
+    </div>
+</div>
+    
+
+    <section id="categories">
+        <div class="category" id="vegetables">
+            <h2 class="vegetables-heading">Vegetables</h2>
+            <div class="product-grid">
+                <div class="product-card">
+    <img src="https://i.ibb.co/BTjKfSs/707cb322e811b757407aca7e154dd8b7.jpg" alt="Tomato">
+    <h3>Tomato</h3>
+    <p class="price">Price: 30<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Tomato',30)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Tomato&price=30&image=https://i.ibb.co/BTjKfSs/707cb322e811b757407aca7e154dd8b7.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/LPMcFkk/135920a3d52a64ec51b5d0de9bf8bf8c.jpg" alt="Potato">
+    <h3>Potato</h3>
+    <p class="price">Price:52<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Potato',52,)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Potato&price=52&image=https://i.ibb.co/LPMcFkk/135920a3d52a64ec51b5d0de9bf8bf8c.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/74QcVWD/c1f241d44b6e38c9a2a9df7dec8666a7.jpg" alt="Onions">
+    <h3>Onions</h3>
+    <p class="price">Price:62<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Onions', 62)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Onions&price=62&image=https://i.ibb.co/74QcVWD/c1f241d44b6e38c9a2a9df7dec8666a7.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/C1ZyMjW/fc91b1d8b38075dacd0a20c7701d5c1c.jpg" alt="Garlic">
+    <h3>Garlic</h3>
+    <p class="price">Price:450<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Garlic',450)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Garlic&price=450&image=https://i.ibb.co/C1ZyMjW/fc91b1d8b38075dacd0a20c7701d5c1c.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/JvSCM4j/Beans.jpg" alt="Beans">
+    <h3>Beans</h3>
+    <p class="price">Price:92<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Beans',92)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Beans&price=92&image=https://i.ibb.co/JvSCM4j/Beans.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/R7ChKjZ/carrot.jpg" alt="Carrot">
+    <h3>Carrot</h3>
+    <p class="price">Price:72<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Carrot',72)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Carrot&price=72&image=https://i.ibb.co/R7ChKjZ/carrot.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/z6K00wb/beetroot.jpg" alt="Beetroot">
+    <h3>Beetroot</h3>
+    <p class="price">Price:78<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Beetroot',78)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Beetroot&price=78&image=https://i.ibb.co/z6K00wb/beetroot.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/9HVj7hh/brinjal.jpg" alt="Brinjal">
+    <h3>Brinjal</h3>
+    <p class="price">Price:53<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Brinjal',53)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Brinjal&price=53&image=https://i.ibb.co/9HVj7hh/brinjal.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/qxDDGsW/89053c546d4a53aea6769c2da24f4533.jpg" alt="Cauli Flower">
+    <h3>Cauli Flower</h3>
+    <p class="price">Price:45<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Cauli Flower',45)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Cauli Flower&price=45&image=https://i.ibb.co/qxDDGsW/89053c546d4a53aea6769c2da24f4533.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/cFX8pV3/5fb8b10d4f74d5547fb92edcd74e1592.jpg" alt="Bitter Guard">
+    <h3>Bitter Guard</h3>
+    <p class="price">Price:55<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Bitter Guard',55)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Bitter Guard&price=55&image=https://i.ibb.co/cFX8pV3/5fb8b10d4f74d5547fb92edcd74e1592.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/X7jMF4G/b75d373efb0a7e918ef98c68e1157beb.jpg" alt="Pumpkin">
+    <h3>Pumpkin</h3>
+    <p class="price">Price:22<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Pumpkin',22)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Pumpkin&price=22&image=https://i.ibb.co/X7jMF4G/b75d373efb0a7e918ef98c68e1157beb.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/T2gmhGm/e351aab79a2c40b83e5c82949b9fe6ae.jpg" alt="Ridge Guard">
+    <h3>Ridge Guard</h3>
+    <p class="price">Price:53<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Ridge Guard',53)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Ridge Guard&price=53&image=https://i.ibb.co/T2gmhGm/e351aab79a2c40b83e5c82949b9fe6ae.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/6RKWpMG/505334dd917aaa14a57bf4f1fffbb0c0.jpg" alt="Bottle Guard">
+    <h3>Bottle Guard</h3>
+    <p class="price">Price:43<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Bottle Guard',43)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Bottle Guard&price=43&image=https://i.ibb.co/6RKWpMG/505334dd917aaa14a57bf4f1fffbb0c0.jpg'">Buy Now</button>
+    </div>
+</div>
+
+                <!-- Add more product cards here -->
+            </div>
+        </div>
+
+        <section id="categories">
+            <div class="category" id="fruits">
+                <h2 class="vegetables-heading">Fruits</h2>
+                <div class="product-grid">
+
+            <div class="product-card">
+        <img src="https://i.ibb.co/KhWSssL/df70a4a990509f38754a9f91eccd3478.jpg" alt="Pineapple">
+        <h3>Pineapple</h3>
+        <p class="price">Price:70<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Pineapple',70)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Pineapple&price=70&image=https://i.ibb.co/KhWSssL/df70a4a990509f38754a9f91eccd3478.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/7jrTnb9/f0ba4bac06448903100453ed4902b2bb.jpg" alt="Orange">
+        <h3>Orange</h3>
+        <p class="price">Price:83<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Orange',83)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Orange&price=83&image=https://i.ibb.co/7jrTnb9/f0ba4bac06448903100453ed4902b2bb.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/YRRcT61/03e6c12090bbe0c9d421b6de421567ed.jpg" alt="Guava">
+        <h3>Guava</h3>
+        <p class="price">Price:53<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Guava',53)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Guava&price=53&image=https://i.ibb.co/YRRcT61/03e6c12090bbe0c9d421b6de421567ed.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/0mdNqTP/f1959ab5bd7597786840e9b0856a0d98.jpg" alt="Papaya">
+        <h3>Papaya</h3>
+        <p class="price">Price:34<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Papaya',34)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Papaya&price=34&image=https://i.ibb.co/0mdNqTP/f1959ab5bd7597786840e9b0856a0d98.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/Y8wFNFT/9f3f2ec552b5e35f3e584f7169f31c4d.jpg" alt="Amla">
+        <h3>Amla</h3>
+        <p class="price">Price:73<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Amla',73)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Amla&price=73&image=https://i.ibb.co/Y8wFNFT/9f3f2ec552b5e35f3e584f7169f31c4d.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/pf0D5XD/f94166e18e6abf3946d438538927c2b5.jpg" alt= "Green Grapes">
+        <h3>Green Grapes</h3>
+        <p class="price">Price:83<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Green Grapes',83)">Add to Cart</button>
+            <button onclick="location.href='order.html?product= Green Grapes&price=83&image=https://i.ibb.co/pf0D5XD/f94166e18e6abf3946d438538927c2b5.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/0Gh9QD9/7043217466ca9fb5589664f3decb30c3.jpg" alt="Pears">
+        <h3>Pears</h3>
+        <p class="price">Price:224<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Pears',224)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Pears&price=224&image=https://i.ibb.co/0Gh9QD9/7043217466ca9fb5589664f3decb30c3.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/DMwjZWN/59a9efe8a630f06ddce2ad4ef9bf3750.jpg" alt="Banana">
+        <h3>Banana</h3>
+        <p class="price">Price:43<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Banana',43)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Banana&price=43&image=https://i.ibb.co/DMwjZWN/59a9efe8a630f06ddce2ad4ef9bf3750.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/WNrkkR6/49f8aa47e301749886b1ffd107323d85.jpg" alt="Apple">
+        <h3>Apple</h3>
+        <p class="price">Price:150<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Apple',150)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Apple&price=150&image=https://i.ibb.co/WNrkkR6/49f8aa47e301749886b1ffd107323d85.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/R3qPd9K/pomegranate.jpg" alt="Pomegranate">
+        <h3>Pomegranate</h3>
+        <p class="price">Price:260<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Pomegranate',260)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Pomegranate&price=260&image=https://i.ibb.co/R3qPd9K/pomegranate.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/N2rdQ0H/f6408c08f9ea1c532989d709c8657d46.jpg" alt="Water Apple">
+        <h3>Water Apple</h3>
+        <p class="price">Price:183<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Water Apple',183)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Water Apple&price=183&image=https://i.ibb.co/N2rdQ0H/f6408c08f9ea1c532989d709c8657d46.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/gJtLjXp/24122addd187a59cd5adcba4b0fc2128.jpg" alt="Mango">
+        <h3>Mango</h3>
+        <p class="price">Price:182<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Mango',182)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Mango&price=182&image=https://i.ibb.co/gJtLjXp/24122addd187a59cd5adcba4b0fc2128.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/QPbxLsw/a2c2f097743bc7d5953df33d7d9f3ce1.jpg" alt="Kiwi">
+        <h3>Kiwi</h3>
+        <p class="price">Price:154<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Kiwi',154)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Kiwi&price=154&image=https://i.ibb.co/QPbxLsw/a2c2f097743bc7d5953df33d7d9f3ce1.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/h9LyjmF/f5cebeeadd05270b081568f020e62f5d.jpg" alt="Custard Apple">
+        <h3>Custard Apple</h3>
+        <p class="price">Price:134<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Custard Apple',134)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Custard Apple&price=134&image=https://i.ibb.co/h9LyjmF/f5cebeeadd05270b081568f020e62f5d.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/kS6hZ7p/44976d9a34e5994e76d24c5d5456d561.jpg" alt="Plum">
+        <h3>Plum</h3>
+        <p class="price">Price:255<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Plum',255)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Plum&price=255&image=https://i.ibb.co/kS6hZ7p/44976d9a34e5994e76d24c5d5456d561.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/ZgJQJxN/de54c9e066927e46e94a272a54e566b4-1.jpg" alt="Sappotta">
+        <h3>Sappotta</h3>
+        <p class="price">Price:73<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Sappotta',73)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Sappotta&price=73&image=https://i.ibb.co/ZgJQJxN/de54c9e066927e46e94a272a54e566b4-1.jpg'">Buy Now</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/gy6C5r3/11277f935b8a05493b4f1c101f59c157.jpg" alt="Black Grapes">
+        <h3>Black Grapes</h3>
+        <p class="price">Price:85<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Black Grapes',85)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Black Grapes&price=85&image=https://i.ibb.co/gy6C5r3/11277f935b8a05493b4f1c101f59c157.jpg'">Buy Now</button>
+        </div>
+    </div>
+    
+
+            <!-- Add more product cards here -->
+    </div>
+    </div>
+
+    <section id="categories">
+        <div class="category" id="greens">
+            <h2 class="vegetables-heading">Greens</h2>
+            <div class="product-grid">
+
+        <div class="product-card">
+    <img src="https://i.ibb.co/PFn5mQF/spinach.jpg" alt="Spinach">
+    <h3>Spinach</h3>
+    <p class="price">Price:35<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Spinach',35)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Spinach&price=35&image=https://i.ibb.co/PFn5mQF/spinach.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/2KkQ15m/22c55c6f051ca81cdc393c320ea0411c.jpg" alt="Manathakkali">
+    <h3>Manathakkali</h3>
+    <p class="price">Price:50<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Manathakkali',50)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Manathakkali&price=50&image=https://i.ibb.co/2KkQ15m/22c55c6f051ca81cdc393c320ea0411c.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/TMWfcQY/murungai.jpg" alt="Murngai Keerai">
+    <h3>Murungai Keerai</h3>
+    <p class="price">Price:32<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Murungai Keerai',32)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Murungai Keerai&price=32&image=https://i.ibb.co/TMWfcQY/murungai.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/dtYWchZ/coriander-leaves.jpg" alt="Coriander Leaves">
+    <h3>Coriander Leaves</h3>
+    <p class="price">Price:65<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Coriander Leaves',65)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Coriander Leaves&price=65&image=https://i.ibb.co/dtYWchZ/coriander-leaves.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/y5mh5bx/curry-leaves.jpg" alt="Curry Leaves">
+    <h3>Curry Leaves</h3>
+    <p class="price">Price:105<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Curry Leaves',105)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Curry Leaves&price=105&image=https://i.ibb.co/y5mh5bx/curry-leaves.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/zSnGH2Q/mint.jpg" alt="Mint">
+    <h3>Mint</h3>
+    <p class="price">Price:64<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Mint',64)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Mint&price=64&image=https://i.ibb.co/zSnGH2Q/mint.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/N7CJmSg/sivappu-thandang-keerai.jpg" alt="Red Spinach">
+    <h3>Red Spinach</h3>
+    <p class="price">Price:36<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Red Spinach',36)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Red Spinach&price=34&image=https://i.ibb.co/N7CJmSg/sivappu-thandang-keerai.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/DfZXfbV/Gongura.webp" alt="Gonguro">
+    <h3>Gonguro</h3>
+    <p class="price">Price:30<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Gonguro',30)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Gonguro&price=30&image=https://i.ibb.co/DfZXfbV/Gongura.webp'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/7Sm2sDr/pirantai.webp" alt="Pirantai">
+    <h3>Pirantai</h3>
+    <p class="price">Price:36<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Pirantai',36)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Pirantai&price=36&image=https://i.ibb.co/7Sm2sDr/pirantai.webp'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/q7wnTbR/ponnanganni.jpg" alt="Ponnanganni">
+    <h3>Ponnanganni</h3>
+    <p class="price">Price:35<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Ponnanganni',35)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Ponnanganni&price=35&image=https://i.ibb.co/q7wnTbR/ponnanganni.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/z89thR0/red-ponnanganni.jpg" alt="Red Ponnanganni">
+    <h3>Red Ponnanganni</h3>
+    <p class="price">Price:36<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Red Ponnanganni',36)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Red Ponnanganni&price=36&image=https://i.ibb.co/z89thR0/red-ponnanganni.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/m43CN1T/Whats-App-Image-2024-12-22-at-19-48-46-af3d5167.jpg" alt="Arai Keerai">
+    <h3>Arai Keerai</h3>
+    <p class="price">Price:36<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Arai Keerai',36)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Arai Keerai&price=36&image=https://i.ibb.co/m43CN1T/Whats-App-Image-2024-12-22-at-19-48-46-af3d5167.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/nbJnhqh/Karisalankanni.jpg" alt="Karisalankanni">
+    <h3>Karisalankanni</h3>
+    <p class="price">Price:38<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Karisalankanni',38)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Karisalankanni&price=38&image=https://i.ibb.co/nbJnhqh/Karisalankanni.jpg'">Buy Now</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/B3gF3MS/Whats-App-Image-2024-12-22-at-19-48-46-1102cae8.jpg" alt="Malabar Spinach">
+    <h3>Malabar Spinach</h3>
+    <p class="price">Price:40<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Malabar Spinach',40)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Malabar Spinach&price=40&image=https://i.ibb.co/B3gF3MS/Whats-App-Image-2024-12-22-at-19-48-46-1102cae8.jpg'">Buy Now</button>
+    </div>
+</div>
+
+        <!-- Add more product cards here -->
+    </div>
+</div>
+
+<section id="categories">
+    <div class="category" id="grains">
+        <h2 class="vegetables-heading">Grains</h2>
+        <div class="product-grid">
+
+    <div class="product-card">
+<img src="https://i.ibb.co/5YXJzDx/50ec9b33f5f74d877be8512c9882c5ef.jpg" alt="Wheat">
+<h3>Wheat</h3>
+<p class="price">Price:40<span>/kg</span></p>
+<div class="button-container">
+    <button onclick="addToCart('Wheat',40)">Add to Cart</button>
+    <button onclick="location.href='order.html?product=Wheat&price=40&image=https://i.ibb.co/5YXJzDx/50ec9b33f5f74d877be8512c9882c5ef.jpg'">Buy Now</button>
+</div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/6b8GN7C/20ac8cafe6691a13431e716139c08480.jpg" alt="Finger Millet">
+    <h3>Finger Millet</h3>
+    <p class="price">Price:45<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Finger Millet',45)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Finger Millet&price=45&image=https://i.ibb.co/6b8GN7C/20ac8cafe6691a13431e716139c08480.jpg'">Buy Now</button>
+    </div>
+    </div>
+
+    <div class="product-card">
+        <img src="https://i.ibb.co/1m5Rrr9/b7eaed5439099e3675309db6b4d0863d.jpg" alt="Pearl Millet">
+        <h3>Pearl Millet</h3>
+        <p class="price">Price:60<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Pearl Millet',60)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Pearl Millet&price=60&image=https://i.ibb.co/1m5Rrr9/b7eaed5439099e3675309db6b4d0863d.jpg'">Buy Now</button>
+        </div>
+        </div>
+
+        
+    <div class="product-card">
+        <img src="https://i.ibb.co/DQTXVch/c1d3302f410244e027eabca5cbff739c.jpg" alt="Channa">
+        <h3>Channa</h3>
+        <p class="price">Price:80<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Channa',80)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Channa&price=80&image=https://i.ibb.co/DQTXVch/c1d3302f410244e027eabca5cbff739c.jpg'">Buy Now</button>
+        </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://i.ibb.co/3hHyKCb/32ec746045bd82a67613558d01316e0e.jpg" alt="Rice">
+            <h3>Rice</h3>
+            <p class="price">Price:50<span>/kg</span></p>
+            <div class="button-container">
+                <button onclick="addToCart('Rice',50)">Add to Cart</button>
+                <button onclick="location.href='order.html?product=Rice&price=50&image=https://i.ibb.co/3hHyKCb/32ec746045bd82a67613558d01316e0e.jpg'">Buy Now</button>
+            </div>
+            </div>
+    
+        <div class="product-card">
+            <img src="https://i.ibb.co/rcMW8RG/76c731fd8804f6cc9455674bf87a674c-1.jpg" alt="Black Sesame">
+            <h3>Black Sesame</h3>
+            <p class="price">Price:250<span>/kg</span></p>
+            <div class="button-container">
+                <button onclick="addToCart('Black Sesame',250)">Add to Cart</button>
+                <button onclick="location.href='order.html?product=Black Sesame&price=250&image=https://i.ibb.co/rcMW8RG/76c731fd8804f6cc9455674bf87a674c-1.jpg'">Buy Now</button>
+            </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://i.ibb.co/RjJnLw8/50be9faa35387d63f33f521d24bdfb11.jpg" alt="Urad Bean">
+                <h3>Urad Bean</h3>
+                <p class="price">Price:140<span>/kg</span></p>
+                <div class="button-container">
+                    <button onclick="addToCart('Urad Bean',140)">Add to Cart</button>
+                    <button onclick="location.href='order.html?product=Urad Bean&price=140&image=https://i.ibb.co/RjJnLw8/50be9faa35387d63f33f521d24bdfb11.jpg'">Buy Now</button>
+                </div>
+                </div>
+
+            <div class="product-card">
+                <img src="https://i.ibb.co/XkYmrCx/456d6498f860168823bb274b62c277e7.jpg" alt="Horse Gram">
+                <h3>Horse Gram</h3>
+                <p class="price">Price:80<span>/kg</span></p>
+                <div class="button-container">
+                    <button onclick="addToCart('Horse Gram',80)">Add to Cart</button>
+                    <button onclick="location.href='order.html?product=Horse Gram&price=80&image=https://i.ibb.co/XkYmrCx/456d6498f860168823bb274b62c277e7.jpg'">Buy Now</button>
+                </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://i.ibb.co/Rj0TxwN/cca9aae055542683adb464b27350fb2f.jpg" alt="Foxtail">
+                    <h3>Foxtail</h3>
+                    <p class="price">Price:60<span>/kg</span></p>
+                    <div class="button-container">
+                        <button onclick="addToCart('Foxtail',60)">Add to Cart</button>
+                        <button onclick="location.href='order.html?product=Foxtail&price=60&image=https://i.ibb.co/Rj0TxwN/cca9aae055542683adb464b27350fb2f.jpg'">Buy Now</button>
+                    </div>
+                    </div>
+
+     <!-- Add more product cards here -->
+    </div>
+</div>
+
+<section id="categories">
+    <div class="category" id="spices">
+        <h2 class="vegetables-heading">Spices</h2>
+        <div class="product-grid">
+
+    <div class="product-card">
+<img src="https://i.ibb.co/vPF4L00/088eb5d5c5ad1eb1826a2515a506cd1c.jpg" alt="Cardamom">
+<h3>Cardamom</h3>
+<p class="price">Price:850<span>/kg</span></p>
+<div class="button-container">
+    <button onclick="addToCart('cardamom',850)">Add to Cart</button>
+    <button onclick="location.href='order.html?product=Cardamom&price=850&image=https://i.ibb.co/vPF4L00/088eb5d5c5ad1eb1826a2515a506cd1c.jpg'">Buy Now</button>
+</div>
+</div>
+
+<div class="product-card">
+    <img src="https://i.ibb.co/z8W2vYX/3d5fdf56da595ed7f8ed10977d932cb1.jpg" alt="Coriander Seeds">
+    <h3>Coriander Seeds</h3>
+    <p class="price">Price:101<span>/kg</span></p>
+    <div class="button-container">
+        <button onclick="addToCart('Coriander Seeds',101)">Add to Cart</button>
+        <button onclick="location.href='order.html?product=Coriander Seeds&price=101&image=https://i.ibb.co/z8W2vYX/3d5fdf56da595ed7f8ed10977d932cb1.jpg'">Buy Now</button>
+    </div>
+    </div>
+    
+    <div class="product-card">
+        <img src="https://i.ibb.co/m8mXY2c/75c6d2ef440eb77ca742e4c57bd05a62.jpg" alt="Star Anise">
+        <h3>Star Anise</h3>
+        <p class="price">Price:560<span>/kg</span></p>
+        <div class="button-container">
+            <button onclick="addToCart('Star Anise',560)">Add to Cart</button>
+            <button onclick="location.href='order.html?product=Star Anise&price=560&image=https://i.ibb.co/m8mXY2c/75c6d2ef440eb77ca742e4c57bd05a62.jpg'">Buy Now</button>
+        </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://i.ibb.co/3FktPd5/36b73648d74af0569cc6c92be5461282.jpg" alt="Cloves">
+            <h3>Cloves</h3>
+            <p class="price">Price:1000<span>/kg</span></p>
+            <div class="button-container">
+                <button onclick="addToCart('Cloves',1000)">Add to Cart</button>
+                <button onclick="location.href='order.html?product=Cloves&price=1000&image=https://i.ibb.co/3FktPd5/36b73648d74af0569cc6c92be5461282.jpg'">Buy Now</button>
+            </div>
+            </div>
+
+            
+        <div class="product-card">
+            <img src="https://i.ibb.co/kyPMsXV/768dadc7e55326caf372d27eb511dcdf.jpg" alt="Turmeric">
+            <h3>Turmeric</h3>
+            <p class="price">Price:170<span>/kg</span></p>
+            <div class="button-container">
+                <button onclick="addToCart('Turmeric',170)">Add to Cart</button>
+                <button onclick="location.href='order.html?product=Turmeric&price=170&image=https://i.ibb.co/kyPMsXV/768dadc7e55326caf372d27eb511dcdf.jpg'">Buy Now</button>
+            </div>
+            </div>
+
+            <div class="product-card">
+                <img src="https://i.ibb.co/6HrCsyF/01357dd7090c618d1afb32fcec6822c5.jpg" alt="Mustard Seeds">
+                <h3>Mustard Seeds</h3>
+                <p class="price">Price:50<span>/kg</span></p>
+                <div class="button-container">
+                    <button onclick="addToCart('Mustard Seeds',50)">Add to Cart</button>
+                    <button onclick="location.href='order.html?product=Mustard Seeds&price=50&image=https://i.ibb.co/6HrCsyF/01357dd7090c618d1afb32fcec6822c5.jpg'">Buy Now</button>
+                </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://i.ibb.co/m6J4C2K/15acb4d4e548e8ca2e3a432360cae54b.jpg" alt="Fenugreek Seeds">
+                    <h3>Fenugreek Seeds</h3>
+                    <p class="price">Price:70<span>/kg</span></p>
+                    <div class="button-container">
+                        <button onclick="addToCart('Fenugreek Seeds',70)">Add to Cart</button>
+                        <button onclick="location.href='order.html?product=Fenugreek Seeds&price=70&image=https://i.ibb.co/m6J4C2K/15acb4d4e548e8ca2e3a432360cae54b.jpg'">Buy Now</button>
+                    </div>
+                    </div>
+
+            <div class="product-card">
+                
+                <img src="https://i.ibb.co/DLw834K/b2f685b08863af760bef715d860b551c.jpg" alt="Cinnamon">
+                <h3>Cinnamon</h3>
+                <p class="price">Price:300<span>/kg</span></p>
+                <div class="button-container">
+                    <button onclick="addToCart('Cinnamon',300)">Add to Cart</button>
+            
+                <button onclick="location.href='order.html?product=Cinnamon&price=300&image=https://i.ibb.co/DLw834K/b2f685b08863af760bef715d860b551c.jpg'">Buy Now</button>
+                </div>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://i.ibb.co/0jt3dg5/f555050038b669a239515a28c3ec4834.jpg" alt="Cummin">
+                    <h3>Cummin</h3>
+                    <p class="price">Price:450<span>/kg</span></p>
+                    <div class="button-container">
+                        <button onclick="addToCart('Cummin',450)">Add to Cart</button>
+                    
+                    <button onclick="location.href='order.html?product=Cummin&price=450&image=https://i.ibb.co/0jt3dg5/f555050038b669a239515a28c3ec4834.jpg'">Buy Now</button>
+                    </div>
+                    </div>
+
+                <div class="product-card">
+                    <img src="https://i.ibb.co/QYncvRD/04a0095edcd8a5968538c1ead388d727.jpg" alt="Fennel Seeds">
+                    <h3>Fennel Seeds</h3>
+                    <p class="price">Price:350<span>/kg</span></p>
+                    <div class="button-container">
+                        <button onclick="addToCart('Fennel Seeds',350)">Add to Cart</button>
+                        <button onclick="location.href='order.html?product=Fennel Seeds&price=350&image=https://i.ibb.co/QYncvRD/04a0095edcd8a5968538c1ead388d727.jpg'">Buy Now</button>
+                    </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="https://i.ibb.co/6tQGkBW/ce0b3792a3a3ad3fc8bada62bb422264.jpg" alt="Red Chilli">
+                        <h3>Red Chilli</h3>
+                        <p class="price">Price:240<span>/kg</span></p>
+                        <div class="button-container">
+                            <button onclick="addToCart('Red chill',240)">Add to Cart</button>
+                            <button onclick="location.href='order.html?product=Red Chilli&price=240&image=https://i.ibb.co/6tQGkBW/ce0b3792a3a3ad3fc8bada62bb422264.jpg'">Buy Now</button>
+                        </div>
+                        </div>
+
+                        <div class="product-card">
+                            <img src="https://i.ibb.co/DGMXVvZ/0231b3450bbceb7c3f04469068c06ce1.jpg" alt="Bay Leaf">
+                            <h3>Bay Leaf</h3>
+                            <p class="price">Price:250<span>/kg</span></p>
+                            <div class="button-container">
+                                <button onclick="addToCart('Bay Leaf',250)">Add to Cart</button>
+                                <button onclick="location.href='order.html?product=Bay Leaf&price=250&image=https://i.ibb.co/DGMXVvZ/0231b3450bbceb7c3f04469068c06ce1.jpg'">Buy Now</button>
+                            </div>
+                            </div>
+    
+
+      <!-- Add more product cards here -->
+    </div>
+</div>
+
+<div class="cart-summary" id="cartSummary">
+    <h3>Cart Summary</h3>
+    <div id="cartItems">
+        <!-- Dynamically generated cart items -->
+    </div>
+    <button onclick="checkout()">Checkout</button>
+</div>
+
+
+    </section>
+
+   <!-- Footer -->
+    <footer class="footer">
+        <h4>Agri Aura</h4>
+        <p>Fresh produce delivered to your doorstep across Tamil Nadu.</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/share/15gbagaCMM/"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/agriaura_official?igsh=aGUybGJtMjZoMmI3"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 Agri Aura. All rights reserved.</p>
+        <div class="newsletter">
+            <h4>Subscribe to our Newsletter</h4>
+            <input type="email" placeholder="Enter your email">
+            <button>Subscribe</button>
+        </div>
+        
+    </footer>
+
+    <script>
+        function scrollToCategory(categoryId) {
+            const category = document.getElementById(categoryId);
+            category.scrollIntoView({ behavior: 'smooth' });
+        }
+
+       let currentSlide = 0;
+    const totalSlides = document.querySelectorAll('.carousel-slide').length;
+
+    function updateCarousel() {
+        const carousel = document.getElementById('carouselImages');
+        const indicators = document.querySelectorAll('.indicator');
+
+        // Move carousel
+        carousel.style.transform = `translateX(-{currentSlide * 100}%)`;
+
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarousel();
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+    }
+
+    // Automatic Slide Movement
+    setInterval(nextSlide, 5000);
+      
+         document.addEventListener("DOMContentLoaded", function () {
+        autoDetectLocation();
+    });
+
+    function autoDetectLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    console.log(`Latitude: {lat}, Longitude: {lon}`);
+
+                    // Use the latitude and longitude to determine the user's location
+                    fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude={lat}&longitude={lon}&localityLanguage=en`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            const districtSelect = document.getElementById("district");
+                            const userDistrict = data.locality || data.city || data.principalSubdivision;
+                            const options = Array.from(districtSelect.options);
+
+                            // Match the location to the dropdown if possible
+                            const match = options.find(option => option.text.includes(userDistrict));
+                            if (match) {
+                                districtSelect.value = match.value;
+                                updatePrices(); // Call your update prices function
+                            } else {
+                                alert("Location detected but not matched with available districts.");
+                            }
+                        })
+                        .catch(error => console.error("Error fetching location data:", error));
+                },
+                (error) => {
+                    console.error("Error detecting location:", error.message);
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    
+   // Array to hold cart items
+   let cart = [];
+
+// Add to Cart function
+function addToCart(productName, productPrice) {
+    // Check if the product is already in the cart
+    const existingProduct = cart.find(item => item.name === productName);
+    if (existingProduct) {
+        existingProduct.quantity += 1; // Increase quantity
+    } else {
+        cart.push({ name: productName, price: productPrice, quantity: 1 }); // Add new product
+    }
+
+    // Update cart count
+    updateCartCount();
+    saveCart();
+    alert(`{productName} added to cart!`);
+}
+
+// Update the cart count in the header
+function updateCartCount() {
+    document.getElementById('cart-count').innerText = cart.reduce((total, item) => total + item.quantity, 0);
+}
+
+// Save cart to local storage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Load cart from local storage
+function loadCart() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartCount();
+    }
+}
+
+// Initialize cart on page load
+window.onload = loadCart;
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.background = '#4CAF50';
+    toast.style.color = 'white';
+    toast.style.padding = '10px';
+    toast.style.borderRadius = '5px';
+    toast.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.1)';
+    toast.style.zIndex = '1000';
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+function checkout() {
+    alert('Proceeding to checkout...');
+    cart = [];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartSummary();
+}
+
+// Initialize cart summary on page load
+window.onload = updateCartSummary;
+
+    </script>
+</body>
+</html>

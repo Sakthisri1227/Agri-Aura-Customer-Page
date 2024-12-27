@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item p {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 1.1em;
+        }
+        .cart-item button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .cart-item button:hover {
+            background-color: #0056b3;
+        }
+        .cart-item button.remove {
+            background-color: red;
+        }
+        .cart-item button.remove:hover {
+            background-color: darkred;
+        }
+        .cart-summary {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .cart-summary p {
+            margin: 5px 0;
+            font-size: 1.2em;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background-color: #218838;
+        }
+        .button.buy-now {
+            background-color: #007bff;
+        }
+        .button.buy-now:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Cart</h1>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically populated here -->
+        </div>
+        <div class="cart-summary">
+            <p><strong>Total:</strong> ₹<span id="cart-total">0</span></p>
+        </div>
+        <div class="button-container">
+            <button class="button" onclick="checkout()">Proceed to Checkout</button>
+            <button class="button buy-now" onclick="placeBulkOrder()">Buy Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample cart data without images
+        let cart = JSON.parse(localStorage.getItem('cart')) || [
+            { name: "Apple", price: 50, quantity: 2 },
+            { name: "Banana", price: 30, quantity: 1 },
+            { name: "Tomato", price: 30, quantity: 1 },
+            { name: "Potato", price: 52, quantity: 2 },
+            { name: "Onions", price: 62, quantity: 1 }
+        ];
+
+        // Function to display cart items
+        function displayCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                cartTotal.innerText = '0';
+                return;
+            }
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <p>${item.name} - ₹${item.price} x ${item.quantity}</p>
+                    <div>
+                        <button onclick="updateQuantity(${index}, -1)">-</button>
+                        <button onclick="updateQuantity(${index}, 1)">+</button>
+                        <button class="remove" onclick="removeItem(${index})">Remove</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            });
+
+            cartTotal.innerText = total;
+        }
+
+        // Update item quantity
+        function updateQuantity(index, change) {
+            const newQuantity = cart[index].quantity + change;
+            if (newQuantity > 0) {
+                cart[index].quantity = newQuantity;
+            } else {
+                removeItem(index);
+            }
+            saveCart();
+            displayCart();
+        }
+
+        // Remove item from cart
+        function removeItem(index) {
+            cart.splice(index, 1);
+            saveCart();
+            displayCart();
+        }
+
+        // Save cart to local storage
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Checkout function
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            alert('Proceeding to checkout...');
+            window.location.href = '/checkout.html'; // Replace with your checkout page URL
+        }
+
+        // Place Bulk Order function
+        function placeBulkOrder() {
+            if (cart.length === 0) {
+                alert('Your cart is empty! Cannot place a bulk order.');
+                return;
+            }
+
+            let orderSummary = "Your Bulk Order Details:\n\n";
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                orderSummary += `${item.name} - Quantity: ${item.quantity}, Price: ₹${itemTotal}\n`;
+                total += itemTotal;
+            });
+
+            orderSummary += `\nTotal Price: ₹${total}\n`;
+
+            alert(orderSummary);
+        }
+
+        // Initialize cart display
+        displayCart();
+    </script>
+</body>
+</html>

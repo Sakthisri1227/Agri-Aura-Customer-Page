@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - Agri Aura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .order-details {
+            margin: 20px 0;
+        }
+
+        .order-details p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .order-details img {
+            max-width: 100px;
+            margin-right: 15px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input, select, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[readonly] {
+            background-color: #f4f4f4;
+            cursor: not-allowed;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #preferred-time-container, #preorder-date-container {
+            display: none;
+        }
+    </style>
+    <script>
+        function updateTotalPrice() {
+            const quantityInput = document.getElementById("quantity");
+            const totalPriceInput = document.getElementById("total-price");
+            const pricePerKg = parseFloat(document.getElementById("product-price").textContent.replace('₹', '').replace('/kg', ''));
+
+            const quantity = parseFloat(quantityInput.value);
+            if (!isNaN(quantity) && quantity > 0) {
+                const totalPrice = (pricePerKg * quantity).toFixed(2);
+                totalPriceInput.value = `₹${totalPrice}`;
+            } else {
+                totalPriceInput.value = "₹0.00";
+            }
+        }
+
+        function handleOrderTypeChange() {
+            const orderType = document.querySelector('input[name="order-type"]:checked').value;
+            const preorderDateContainer = document.getElementById("preorder-date-container");
+
+            if (orderType === "Preorder") {
+                preorderDateContainer.style.display = "block";
+            } else {
+                preorderDateContainer.style.display = "none";
+                document.getElementById("preorder-date").value = "";
+            }
+        }
+
+        function handleTimeSlotChange() {
+            const timeSlot = document.getElementById("time-slot").value;
+            const preferredTimeContainer = document.getElementById("preferred-time-container");
+
+            if (timeSlot === "Preferred") {
+                preferredTimeContainer.style.display = "block";
+            } else {
+                preferredTimeContainer.style.display = "none";
+                document.getElementById("preferred-time").value = "";
+            }
+        }
+
+        function placeOrder(event) {
+    event.preventDefault();
+
+    const name = document.querySelector('input[placeholder="Enter your full name"]').value.trim();
+    const address = document.querySelector('input[placeholder="Enter your delivery address"]').value.trim();
+    const contact = document.querySelector('input[placeholder="Enter your contact number"]').value.trim();
+    const quantity = parseFloat(document.getElementById("quantity").value);
+    const orderType = document.querySelector('input[name="order-type"]:checked').value;
+    const timeSlot = document.getElementById("time-slot").value;
+    const preferredTime = document.getElementById("preferred-time").value;
+    const preferredPeriod = document.getElementById("preferred-time-period").value;
+    const preorderDate = document.getElementById("preorder-date").value;
+
+    if (!name || !address || !contact || isNaN(quantity) || quantity <= 0) {
+        alert("Please fill in all fields correctly.");
+        return;
+    }
+
+    if (timeSlot === "Preferred" && !preferredTime) {
+        alert("Please specify your preferred time for delivery.");
+        return;
+    }
+
+    if (orderType === "Preorder" && !preorderDate) {
+        alert("Please specify the preorder date.");
+        return;
+    }
+
+    const totalPrice = document.getElementById("total-price").value;
+
+    alert(`Your ${orderType} order for ${quantity} kg of ${document.getElementById("product-name").textContent} has been placed successfully! Total Price: ${totalPrice}, Delivery: ${timeSlot} ${preorderDate ? `on ${preorderDate}` : ''} ${timeSlot === "Preferred" ? `(${preferredTime} ${preferredPeriod})` : ''}`);
+
+    const order = {
+        product: document.getElementById("product-name").textContent,
+        price: document.getElementById("product-price").textContent,
+        quantity,
+        totalPrice,
+        orderType,
+        timeSlot,
+        preferredTime: preferredTime ? `${preferredTime} ${preferredPeriod}` : "",
+        preorderDate,
+        name,
+        address,
+        contact
+    };
+    localStorage.setItem('lastOrder', JSON.stringify(order));
+
+    window.location.href = "index.html";
+}
+
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            const product = params.get("product") || "Unknown Product";
+            const price = params.get("price") || "0";
+            const image = params.get("image");
+
+            document.getElementById("product-name").textContent = product;
+            document.getElementById("product-price").textContent = `₹${price}/kg`;
+
+            if (image) {
+                document.getElementById("product-image").src = image;
+            } else {
+                document.getElementById("product-image").alt = "No image available";
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Order Details</h2>
+        <div class="order-details">
+            <div style="display: flex;">
+                <img id="product-image" src="" alt="Product Image" />
+                <div>
+                    <p><strong>Product:</strong> <span id="product-name">Product Name</span></p>
+                    <p><strong>Price:</strong> <span id="product-price">₹0/kg</span></p>
+                </div>
+            </div>
+        </div>
+        <form onsubmit="placeOrder(event)">
+            <input id="quantity" type="number" placeholder="Enter quantity in kg" required min="1" oninput="updateTotalPrice()">
+            <input id="total-price" type="text" placeholder="Total Price" readonly>
+            <input type="text" placeholder="Enter your full name" required>
+            <input type="text" placeholder="Enter your delivery address" required>
+            <input type="text" placeholder="Enter your contact number" required pattern="[0-9]{10}" title="Please enter a valid 10-digit number">
+            
+            <div>
+                <label><input type="radio" name="order-type" value="Normal" checked onchange="handleOrderTypeChange()"> Normal Order</label>
+                <label><input type="radio" name="order-type" value="Preorder" onchange="handleOrderTypeChange()"> Preorder</label>
+            </div>
+
+            <div id="preorder-date-container">
+                <input id="preorder-date" type="date" placeholder="Preorder delivery date">
+            </div>
+
+            <select id="time-slot" required onchange="handleTimeSlotChange()">
+                <option value="">Select delivery time slot</option>
+                <option value="4:30 AM">4:30 AM</option>
+                <option value="12:00 PM">12:00 PM</option>
+                <option value="5:00 PM">5:00 PM</option>
+                <option value="Preferred">Preferred Time For Urgengy</option>
+            </select>
+
+            <div id="preferred-time-container">
+                <label for="preferred-time">Preferred Time for urgency Delivery:</label>
+                <div style="display: flex; gap: 5px;">
+                    <input id="preferred-time" type="time" placeholder="Preferred time for delivery">
+                    <select id="preferred-time-period">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+</body>
+</html>
